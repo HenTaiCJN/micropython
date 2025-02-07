@@ -9,7 +9,7 @@ ifdef BOARD_DIR
 BOARD ?= $(notdir $(BOARD_DIR:/=))
 else
 # If not given on the command line, then default to ESP32_GENERIC.
-BOARD ?= ESP32_GENERIC
+BOARD ?= ESP32_GENERIC_S3
 BOARD_DIR ?= boards/$(BOARD)
 endif
 
@@ -63,6 +63,7 @@ define RUN_IDF_PY
 endef
 
 all:
+	#idf.py $(IDFPY_FLAGS) menuconfig
 	idf.py $(IDFPY_FLAGS) -B $(BUILD) build || (echo -e $(HELP_BUILD_ERROR); false)
 	@$(PYTHON) makeimg.py \
 		$(BUILD)/sdkconfig \
@@ -75,6 +76,7 @@ all:
 $(BUILD)/bootloader/bootloader.bin $(BUILD)/partition_table/partition-table.bin $(BUILD)/micropython.bin: FORCE
 
 clean:
+	rm $(CURDIR)/managed_components/espressif__tinyusb/.component_hash
 	$(call RUN_IDF_PY,fullclean)
 
 deploy:

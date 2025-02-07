@@ -77,3 +77,6 @@
 [submodule "ports/esp32/bindings/lib/pycparser"]
 	path = ports/esp32/bindings/lib/pycparser
 	url = https://github.com/eliben/pycparser.git
+[submodule "ports/esp32/bindings/lib/esp-idf"]
+	path = ports/esp32/bindings/lib/esp-idf
+	url = https://github.com/espressif/esp-idf.git

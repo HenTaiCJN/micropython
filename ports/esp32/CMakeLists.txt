@@ -62,5 +62,20 @@ list(APPEND EXTRA_COMPONENT_DIRS main_${IDF_TARGET})
 # Enable the panic handler wrapper
 idf_build_set_property(LINK_OPTIONS "-Wl,--wrap=esp_panic_handler" APPEND)
 
+#############################################
+set(BINDING_DIR $(CMAKE_CURRENT_LIST_DIR)/bindings)
+set(SECOND_BUILD 0)
+set(GEN_SCRIPT python)
+set(LV_PORT esp32)
+set(LV_CFLAGS "-DLV_KCONFIG_IGNORE=1")
+
+
+set(ENV{BINDING_DIR} ${BINDING_DIR})
+set(ENV{SECOND_BUILD} ${SECOND_BUILD})
+set(ENV{GEN_SCRIPT} ${GEN_SCRIPT})
+set(ENV{LV_PORT} ${LV_PORT})
+set(ENV{LV_CFLAGS} ${LV_CFLAGS})
+#############################################
+
 # Define the project.
 project(micropython)
