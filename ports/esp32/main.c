@@ -60,7 +60,21 @@
 #include "modmachine.h"
 #include "modnetwork.h"
 
+#if SOC_LCD_I80_SUPPORTED
+#include "bindings/ext_mod/lcd_bus/esp32_include/i80_bus.h"
+#endif
+
+#if SOC_LCD_RGB_SUPPORTED
+#include "bindings/ext_mod/lcd_bus/esp32_include/rgb_bus.h"
+#endif
+
+#include "bindings/ext_mod/lcd_bus/esp32_include/spi_bus.h"
+#include "bindings/ext_mod/lcd_bus/esp32_include/i2c_bus.h"
+#include "bindings/ext_mod/spi3wire/include/spi3wire.h"
+#include "bindings/micropy_updates/common/mp_spi_common.h"
+
 #if MICROPY_BLUETOOTH_NIMBLE
+
 #include "extmod/modbluetooth.h"
 #endif
 
@@ -147,7 +161,7 @@ soft_reset:
     if (pyexec_mode_kind == PYEXEC_MODE_FRIENDLY_REPL && ret != 0) {
         int ret = pyexec_file_if_exists("main.py");
         if (ret & PYEXEC_FORCED_EXIT) {
-            goto soft_reset_exit;
+            goto soft_reset_exit;	        
         }
     }
 
@@ -166,6 +180,21 @@ soft_reset:
     }
 
 soft_reset_exit:
+    #if SOC_LCD_I80_SUPPORTED
+    mp_lcd_i80_bus_deinit_all();
+    #endif
+
+    #if SOC_LCD_RGB_SUPPORTED
+    mp_lcd_rgb_bus_deinit_all();
+    #endif
+
+    mp_lcd_spi_bus_deinit_all();
+
+    mp_lcd_i2c_bus_deinit_all();
+
+    mp_spi3wire_deinit_all();
+
+    mp_machine_hw_spi_bus_deinit_all();
 
     #if MICROPY_BLUETOOTH_NIMBLE
     mp_bluetooth_deinit();

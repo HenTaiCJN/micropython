@@ -38,6 +38,12 @@ PYTHON ?= python3
 
 CMAKE_ARGS =
 
+#############################################
+
+USER_C_MODULES = $(CURDIR)/bindings/ext_mod/micropython.cmake
+
+############################################
+
 ifdef USER_C_MODULES
 	CMAKE_ARGS += -DUSER_C_MODULES=${USER_C_MODULES}
 endif
@@ -64,6 +70,7 @@ endef
 
 all:
 	#idf.py $(IDFPY_FLAGS) menuconfig
+	cp build/sdkconfig build-ESP32_GENERIC_S3/.
 	idf.py $(IDFPY_FLAGS) -B $(BUILD) build || (echo -e $(HELP_BUILD_ERROR); false)
 	@$(PYTHON) makeimg.py \
 		$(BUILD)/sdkconfig \
